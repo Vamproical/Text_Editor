@@ -12,13 +12,11 @@ public class LoadSave {
         } catch (IOException e) {
             System.out.println("No file found: " + filename);
         }
-        System.out.println(area.getText());
         return area.getText();
     }
 
     public static void save(String buffer, String filename) {
         File file = new File(filename);
-        System.out.println(buffer);
         try (PrintWriter writer = new PrintWriter(file)) {
             writer.print(buffer);
         } catch (IOException e) {

@@ -2,6 +2,7 @@ package editor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class TextEditor extends JFrame {
     private JTextArea textArea;
@@ -18,6 +19,7 @@ public class TextEditor extends JFrame {
         setVisible(true);
         createButton();
         createTextArea();
+        createMenu();
         Container c = getContentPane();
         c.add(panel, BorderLayout.NORTH);
         c.add(scrollPane, BorderLayout.CENTER);
@@ -51,5 +53,33 @@ public class TextEditor extends JFrame {
 
         scrollPane = new JScrollPane(textArea);
         scrollPane.setName("ScrollPane");
+    }
+
+    private void createMenu() {
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        JMenu fileMenu = new JMenu("File");
+        fileMenu.setName("MenuFile");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        menuBar.add(fileMenu);
+
+        JMenuItem loadMenuItem = new JMenuItem("Load");
+        loadMenuItem.setMnemonic(KeyEvent.VK_L);
+        loadMenuItem.setName("MenuLoad");
+        JMenuItem saveMenuItem = new JMenuItem("Save");
+        saveMenuItem.setMnemonic(KeyEvent.VK_S);
+        saveMenuItem.setName("MenuSave");
+        JMenuItem exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.setName("MenuExit");
+
+        fileMenu.add(loadMenuItem);
+        fileMenu.add(saveMenuItem);
+
+        fileMenu.addSeparator();
+        fileMenu.add(exitMenuItem);
+
+        loadMenuItem.addActionListener(event -> textArea.setText(LoadSave.load(inputField.getText())));
+        saveMenuItem.addActionListener(event -> LoadSave.save(textArea.getText(), inputField.getText()));
+        exitMenuItem.addActionListener(event -> dispose());
     }
 }
