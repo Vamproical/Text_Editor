@@ -8,7 +8,7 @@ public class LoadSave {
         JTextArea area = new JTextArea();
         try (Reader fr = new FileReader(filename)) {
             BufferedReader reader = new BufferedReader(fr);
-            area.read(reader,filename);
+            area.read(reader, filename);
         } catch (IOException e) {
             System.out.println("No file found: " + filename);
         }
