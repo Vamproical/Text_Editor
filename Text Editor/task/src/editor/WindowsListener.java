@@ -27,7 +27,7 @@ public class WindowsListener extends WindowAdapter {
 
     private class ConfirmWindow extends JFrame implements ActionListener {
         public ConfirmWindow() {
-            setSize(250, 100);
+            setSize(350, 150);
             setLayout(new BorderLayout());
 
             JLabel confirmLabel = new JLabel(
@@ -37,25 +37,36 @@ public class WindowsListener extends WindowAdapter {
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new FlowLayout());
 
-            JButton exitButton = new JButton("Yes");
-            exitButton.addActionListener(this);
-            buttonPanel.add(exitButton);
+            JButton saveButton = new JButton("Save");
+            saveButton.addActionListener(this);
+            buttonPanel.add(saveButton);
 
-            JButton cancelButton = new JButton("No");
+            JButton doNotSaveButton = new JButton("Don't save");
+            doNotSaveButton.addActionListener(this);
+            buttonPanel.add(doNotSaveButton);
+
+            JButton cancelButton = new JButton("Cancel");
             cancelButton.addActionListener(this);
             buttonPanel.add(cancelButton);
 
             add(buttonPanel, BorderLayout.SOUTH);
+            setLocationRelativeTo(null);
+            pack();
         }
 
         public void actionPerformed(ActionEvent e) {
             String action = e.getActionCommand();
 
-            if (action.equals("Yes")) {
+            if (action.equals("Save")) {
                 SaveCommand save = new SaveCommand(editor);
                 save.execute();
+                System.exit(0);
+            } else if (action.equals("Don't save")) {
+                System.exit(0);
+            } else {
+                dispose();
             }
-            System.exit(0);
+
         }
     }
 }

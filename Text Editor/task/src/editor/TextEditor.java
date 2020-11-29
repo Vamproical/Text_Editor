@@ -1,5 +1,6 @@
 package editor;
 
+import editor.font.SetFont;
 import editor.menu.MainMenu;
 import editor.menu.MenuBar;
 import editor.search.Match;
@@ -8,6 +9,7 @@ import editor.search.SearchOption;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayDeque;
 
@@ -44,6 +46,7 @@ public class TextEditor extends JFrame {
         textArea.setName("TextArea");
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
+        textArea.copy();
         add(textArea);
 
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -54,7 +57,7 @@ public class TextEditor extends JFrame {
         getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
 
-    private void clearText() {
+    public void clearText() {
         textArea.setText("");
     }
 
@@ -87,6 +90,10 @@ public class TextEditor extends JFrame {
 
     public boolean getRegExp() {
         return mainMenu.getUseRegExCheckbox();
+    }
+
+    public JTextArea getTextArea() {
+        return textArea;
     }
 
     public String getText() {

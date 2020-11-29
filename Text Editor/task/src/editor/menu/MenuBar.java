@@ -1,17 +1,15 @@
 package editor.menu;
 
 import editor.TextEditor;
-import editor.command.ContinueSearchCommand;
-import editor.command.LoadCommand;
-import editor.command.SaveCommand;
-import editor.command.StartSearchCommand;
+import editor.command.*;
+import editor.font.SetFont;
 import editor.search.SearchOption;
 
 import javax.swing.*;
 
 public class MenuBar extends JMenuBar {
     private final TextEditor editor;
-
+    private SetFont dialog;
     private final MainMenu mainMenu;
 
     public MenuBar(TextEditor editor, MainMenu mainMenu) {
@@ -32,12 +30,24 @@ public class MenuBar extends JMenuBar {
         save.setName("MenuSave");
         save.addActionListener(e -> SwingUtilities.invokeLater(new SaveCommand(editor)));
 
+        JMenuItem newFile = new JMenuItem("New");
+        newFile.setName("MenuNewFile");
+        newFile.addActionListener(e -> editor.clearText());
+
+        JMenuItem fonts = new JMenuItem("Font");
+        fonts.setName("MenuFont");
+        fonts.addActionListener(e -> SwingUtilities.invokeLater(new FontCommand(editor)));// -> SwingUtilities.invokeLater(new FontCommand(editor)));
+
+
+
         JMenuItem exit = new JMenuItem("Exit");
         exit.setName("MenuExit");
         exit.addActionListener(e -> editor.dispose());
 
+        mFile.add(newFile);
         mFile.add(load);
         mFile.add(save);
+        mFile.add(fonts);
         mFile.addSeparator();
         mFile.add(exit);
 
