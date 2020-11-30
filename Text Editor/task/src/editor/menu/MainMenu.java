@@ -6,7 +6,6 @@ import editor.command.LoadCommand;
 import editor.command.SaveCommand;
 import editor.command.StartSearchCommand;
 import editor.search.SearchOption;
-import editor.search.StartSearch;
 
 import javax.swing.*;
 import java.awt.*;

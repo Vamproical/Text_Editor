@@ -19,19 +19,20 @@ public class SetFont extends JDialog {
     }
 
     private void init() {
-        setSize(350, 150);
         setLayout(new BorderLayout());
         JPanel comboPanel = new JPanel();
         comboPanel.setLayout(new FlowLayout());
 
+        JLabel fontLabel = new JLabel("Font: ");
         JComboBox comboBoxFonts = new JComboBox(fonts);
+        comboBoxFonts.setPreferredSize(new Dimension(135,25));
         comboBoxFonts.addActionListener(e -> {
             JComboBox box = (JComboBox) e.getSource();
             font.set((String) box.getSelectedItem());
             System.out.println(font.toString());
         });
+        comboPanel.add(fontLabel);
         comboPanel.add(comboBoxFonts);
-        add(comboBoxFonts);
 
         JLabel sizeLabel = new JLabel("Size: ");
 
@@ -72,7 +73,7 @@ public class SetFont extends JDialog {
         buttonPanel.add(cancelButton);
 
         add(buttonPanel, BorderLayout.AFTER_LAST_LINE);
-        setPreferredSize(new Dimension(300, 150));
+        setPreferredSize(new Dimension(300, 105));
         setLocationRelativeTo(null);
         pack();
     }

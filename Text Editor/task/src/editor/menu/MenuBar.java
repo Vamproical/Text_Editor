@@ -9,7 +9,6 @@ import javax.swing.*;
 
 public class MenuBar extends JMenuBar {
     private final TextEditor editor;
-    private SetFont dialog;
     private final MainMenu mainMenu;
 
     public MenuBar(TextEditor editor, MainMenu mainMenu) {

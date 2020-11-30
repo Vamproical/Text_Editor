@@ -23,9 +23,8 @@ public class TextEditor extends JFrame {
 
     public TextEditor() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        setSize(650, 650);
+        //setSize(650, 650);
         setTitle("TextEditor");
-        setMaximumSize(new Dimension(650, 650));
         createTextArea();
         WindowsListener window = new WindowsListener(this);
         addWindowListener(window);
@@ -38,6 +37,8 @@ public class TextEditor extends JFrame {
         MenuBar menuBar = new MenuBar(this, mainMenu);
         setJMenuBar(menuBar);
         add(mainMenu, BorderLayout.NORTH);
+        setSize(new Dimension(650,650));
+
         setVisible(true);
     }
 
