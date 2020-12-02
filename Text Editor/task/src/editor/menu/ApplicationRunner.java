@@ -6,6 +6,11 @@ import javax.swing.*;
 
 public class ApplicationRunner {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TextEditor::new);
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            SwingUtilities.invokeLater(TextEditor::new);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

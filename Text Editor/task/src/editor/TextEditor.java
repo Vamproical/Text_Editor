@@ -1,15 +1,14 @@
 package editor;
 
-import editor.font.SetFont;
 import editor.menu.MainMenu;
 import editor.menu.MenuBar;
 import editor.search.Match;
 import editor.search.SearchOption;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayDeque;
 
@@ -23,7 +22,6 @@ public class TextEditor extends JFrame {
 
     public TextEditor() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        //setSize(650, 650);
         setTitle("TextEditor");
         createTextArea();
         WindowsListener window = new WindowsListener(this);
@@ -47,7 +45,11 @@ public class TextEditor extends JFrame {
         textArea.setName("TextArea");
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.copy();
+        SaveSettings saveSettings = new SaveSettings();
+        Settings settings = saveSettings.read();
+        String font = settings.getFont();
+        int size = settings.getSize();
+        textArea.setFont(new Font(font,Font.PLAIN,size));
         add(textArea);
 
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -68,6 +70,8 @@ public class TextEditor extends JFrame {
 
     public synchronized void loadFromFile() {
         fileChooser.setVisible(true);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text files", "txt");
+        fileChooser.setFileFilter(filter);
         int ret = fileChooser.showDialog(null, "Открыть файл");
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
@@ -114,36 +118,39 @@ public class TextEditor extends JFrame {
     }
 
     public void startSearch(SearchOption option) {
-        int index = 0;
-        int wordLength = 0;
-        switch (option) {
-            case FORWARD:
-                if (this.textArea.getCaretPosition()
-                        == this.matches.getLast().getIndex()
-                        + this.matches.getLast().getLength()) {
+        if (getSearchField().isBlank()) {
+            JOptionPane.showMessageDialog(null, "Please, to start, click the search button", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int index = 0;
+            int wordLength = 0;
+            switch (option) {
+                case FORWARD:
+                    if (this.textArea.getCaretPosition()
+                            == this.matches.getLast().getIndex()
+                            + this.matches.getLast().getLength()) {
+                        this.matches.addFirst(this.matches.removeLast());
+                    }
+                    index = this.matches.getLast().getIndex();
+                    wordLength = this.matches.getLast().getLength();
                     this.matches.addFirst(this.matches.removeLast());
-                }
-                index = this.matches.getLast().getIndex();
-                wordLength = this.matches.getLast().getLength();
-                this.matches.addFirst(this.matches.removeLast());
-                break;
-            case BACKWARD:
-                if (this.textArea.getCaretPosition()
-                        == this.matches.getFirst().getIndex()
-                        + this.matches.getFirst().getLength()) {
+                    break;
+                case BACKWARD:
+                    if (this.textArea.getCaretPosition()
+                            == this.matches.getFirst().getIndex()
+                            + this.matches.getFirst().getLength()) {
+                        this.matches.addLast(this.matches.removeFirst());
+                    }
+                    index = this.matches.getFirst().getIndex();
+                    wordLength = this.matches.getFirst().getLength();
                     this.matches.addLast(this.matches.removeFirst());
-                }
-                index = this.matches.getFirst().getIndex();
-                wordLength = this.matches.getFirst().getLength();
-                this.matches.addLast(this.matches.removeFirst());
-                break;
-            case START:
-                index = this.initSearch.getLast().getIndex();
-                wordLength = this.initSearch.getLast().getLength();
+                    break;
+                case START:
+                    index = this.initSearch.getLast().getIndex();
+                    wordLength = this.initSearch.getLast().getLength();
+            }
+            this.textArea.setCaretPosition(index + wordLength);
+            this.textArea.select(index, index + wordLength);
+            this.textArea.grabFocus();
         }
-        this.textArea.setCaretPosition(index + wordLength);
-        this.textArea.select(index, index + wordLength);
-        this.textArea.grabFocus();
     }
-
 }

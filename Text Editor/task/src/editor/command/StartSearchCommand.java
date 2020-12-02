@@ -16,35 +16,39 @@ public class StartSearchCommand extends Command{
     }
     @Override
     public void execute() {
-        Thread thread = null;
-        if (textEditor.getRegExp()) {
-            try {
-                thread = new Thread(new SearchByRegExp(this.textEditor.getSearchField(),
-                        this.textEditor.getText(),
-                        this.textEditor.getMatches()));
-                SwingUtilities.invokeLater(thread);
-            } catch (Exception e) {
-                System.out.println("Something went wrong");
-            }
+        if (textEditor.getSearchField().isBlank()) {
+            JOptionPane.showMessageDialog(null,"Please, add word to search", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
-            try {
-                thread = new Thread(new SearchByWord(this.textEditor.getSearchField(),
-                        this.textEditor.getText(),
-                        this.textEditor.getMatches()));
-                SwingUtilities.invokeLater(thread);
-            } catch (Exception e) {
-                System.out.println("Something went wrong");
+            Thread thread = null;
+            if (textEditor.getRegExp()) {
+                try {
+                    thread = new Thread(new SearchByRegExp(this.textEditor.getSearchField(),
+                            this.textEditor.getText(),
+                            this.textEditor.getMatches()));
+                    SwingUtilities.invokeLater(thread);
+                } catch (Exception e) {
+                    System.out.println("Something went wrong");
+                }
+            } else {
+                try {
+                    thread = new Thread(new SearchByWord(this.textEditor.getSearchField(),
+                            this.textEditor.getText(),
+                            this.textEditor.getMatches()));
+                    SwingUtilities.invokeLater(thread);
+                } catch (Exception e) {
+                    System.out.println("Something went wrong");
+                }
             }
+            if (thread == null) return;
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.textEditor.saveSearchResults();
+            StartSearch searchThread = new StartSearch(textEditor);
+            searchThread.setOption(SearchOption.START);
+            SwingUtilities.invokeLater(searchThread);
         }
-        if (thread == null) return;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.textEditor.saveSearchResults();
-        StartSearch searchThread = new StartSearch(textEditor);
-        searchThread.setOption(SearchOption.START);
-        SwingUtilities.invokeLater(searchThread);
     }
 }

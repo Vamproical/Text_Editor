@@ -10,6 +10,7 @@ import editor.search.SearchOption;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 
 public class MainMenu extends JPanel {
     private static String RESOURCES_PATH = "C:\\Users\\Никита\\IdeaProjects\\Text Editor\\Text Editor\\task\\src\\icons\\";
@@ -54,32 +55,37 @@ public class MainMenu extends JPanel {
         saveButton = new JButton(saveIcon);
         saveButton.setName("SaveButton");
         saveButton.setPreferredSize(BUTTON_DIMENSION);
+        saveButton.setMnemonic(KeyEvent.VK_S);
 
         openButton = new JButton(loadIcon);
         openButton.setName("OpenButton");
         openButton.setPreferredSize(BUTTON_DIMENSION);
+        openButton.setMnemonic(KeyEvent.VK_O);
 
 
         startSearchButton = new JButton(searchIcon);
         startSearchButton.setName("StartSearchButton");
         startSearchButton.setPreferredSize(BUTTON_DIMENSION);
+        startSearchButton.setMnemonic(KeyEvent.VK_ENTER);
 
 
         nextMatchButton = new JButton(nextIcon);
         nextMatchButton.setName("NextMatchButton");
         nextMatchButton.setPreferredSize(BUTTON_DIMENSION);
+        nextMatchButton.setMnemonic(KeyEvent.VK_L);
 
 
         previousMatchButton = new JButton(prevIcon);
         previousMatchButton.setName("PreviousMatchButton");
         previousMatchButton.setPreferredSize(BUTTON_DIMENSION);
+        previousMatchButton.setMnemonic(KeyEvent.VK_J);
 
 
         useRegExCheckbox = new JCheckBox("Use regex");
         useRegExCheckbox.setName("UseRegExCheckbox");
         useRegExCheckbox.addItemListener(itemEvent -> setIsChecked(itemEvent.getStateChange() == ItemEvent.SELECTED
                 ? 1 : 2));
-
+        useRegExCheckbox.setMnemonic(KeyEvent.VK_R);
         searchField.setPreferredSize(new Dimension(300, 45));
 
         testPanel.add(searchField);

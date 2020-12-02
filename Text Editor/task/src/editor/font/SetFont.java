@@ -1,9 +1,15 @@
 package editor.font;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import editor.SaveSettings;
 import editor.TextEditor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class SetFont extends JDialog {
@@ -26,10 +32,10 @@ public class SetFont extends JDialog {
         JLabel fontLabel = new JLabel("Font: ");
         JComboBox comboBoxFonts = new JComboBox(fonts);
         comboBoxFonts.setPreferredSize(new Dimension(135,25));
+        font.set((String) comboBoxFonts.getSelectedItem());
         comboBoxFonts.addActionListener(e -> {
             JComboBox box = (JComboBox) e.getSource();
             font.set((String) box.getSelectedItem());
-            System.out.println(font.toString());
         });
         comboPanel.add(fontLabel);
         comboPanel.add(comboBoxFonts);
@@ -79,7 +85,10 @@ public class SetFont extends JDialog {
     }
 
     private void setFonts(TextEditor editor, String font, Integer size) {
+        System.out.println("Font " + font + " size " + size);
         Font f = new Font(font, Font.PLAIN, size);
+        SaveSettings saveSettings = new SaveSettings();
+        saveSettings.save(font, size);
         editor.getTextArea().setFont(f);
     }
 }
